@@ -41,4 +41,6 @@ console.log(arr[0])
 
 // добавления нового свойства в объект
 obj.b = '1234';
+obj["new_item"] = 10;
 console.log(obj.b)
+
