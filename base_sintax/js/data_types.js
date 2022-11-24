@@ -2,7 +2,7 @@
 
 
 // Числа
-let number = 4.6;
+let myNumber = 4.6;
 // вернет тип infinity => бесконечный
 console.log(4/0);
 

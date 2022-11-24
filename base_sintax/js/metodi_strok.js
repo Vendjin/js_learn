@@ -26,3 +26,8 @@ console.log(fruit.substring(5, 9));
 
 // с какого начинать и сколько символов после!
 console.log(fruit.substr(5, 2));
+
+
+// trim() удаляет все пробелы в начале и конце строки
+let testText = '  тут текст с пробелами в начале и конце   ';
+console.log(testText.trim());
