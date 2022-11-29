@@ -58,14 +58,14 @@ function getTimeFromMinutes(minutes) {
 
     if (!Number.isInteger(minutes) || typeof (minutes) !== 'number' || minutes < 0) {
         return 'Ошибка, проверьте данные';
-    } else if (minutes === 0){
+    } else if (minutes === 0) {
         return 'Это 0 часов и 0 минут';
     }
     let hour = Math.floor(minutes / oneHour);
     let lastMinutes = minutes % oneHour;
 
     let hoursStr = ''
-    switch (hour){
+    switch (hour) {
         case 1:
             hoursStr = 'час';
             break;
@@ -89,7 +89,7 @@ function findMaxNumber(a, b, c, d) {
     if (typeof a !== 'number' ||
         typeof b !== 'number' ||
         typeof c !== 'number' ||
-        typeof d !== 'number' ){
+        typeof d !== 'number') {
         return 0;
     }
     return Math.max(a, b, c, d);
@@ -97,14 +97,14 @@ function findMaxNumber(a, b, c, d) {
 
 function fib(len) {
 
-    if ( typeof len !== 'number' || len < 0 || len === 0){
+    if (typeof len !== 'number' || len < 0 || len === 0) {
         return '';
     }
     let strFib = '';
     let first = 0;
     let second = 1;
 
-    for (let i = 0; i < len; i++){
+    for (let i = 0; i < len; i++) {
         // if ( i + 1 === len) {
         //     strFib += `${first}`;
         // } else {
@@ -132,7 +132,7 @@ const personalPlanPeter = {
         },
         exp: '1 month'
     },
-    showAgeAndLangs: function (obj){
+    showAgeAndLangs: function (obj) {
         const {age} = obj;
         const {languages} = obj.skills;
         const languagesToStr = languages.join(' ').toUpperCase();
@@ -164,9 +164,9 @@ console.log(showProgrammingLangs(personalPlanPeter));
 
 function showFamily(family) {
     let persons = family.join(" ");
-    if (family.length){
+    if (family.length) {
         return `Семья состоит из: ${persons}`;
-    } else{
+    } else {
         return 'Семья пуста';
     }
 }
@@ -178,9 +178,140 @@ console.log(showFamily(family));
 const favoriteCities = ['liSBon', 'ROME', 'miLan', 'Dublin'];
 
 function standardizeStrings(arr) {
-    arr.forEach(function (item){
+    arr.forEach(function (item) {
         console.log(item.toLowerCase());
     });
 }
 
 standardizeStrings(favoriteCities);
+
+function reverseV1(someString) {
+    if (typeof someString !== "string") {
+        return 'Ошибка!';
+    } else {
+        console.log(someString.split(''));
+        console.log(someString.split(' '));
+        return someString.split('').reverse().join('');
+    }
+}
+
+console.log(reverseV1('This is some strange string'));
+
+function reverseUseLoop(someString) {
+    if (typeof someString !== "string") {
+        return 'Ошибка';
+    } else {
+        let result = '';
+        let lenString = someString.length - 1
+        // for (let i in someString) {
+        //     let lastLetter = someString[lenString];
+        //     result += lastLetter;
+        //     lenString -= 1;
+        //
+        // }
+
+        for (let i = someString.length - 1; i >=0; i--){
+            result += someString[i];
+        }
+        return result;
+    }
+}
+
+console.log(reverseUseLoop('This is some strange string'));
+
+
+const baseCurrencies = ['USD', 'EUR'];
+const additionalCurrencies = ['UAH', 'RUB', 'CNY'];
+
+function availableCurr (arr, missingCurr){
+    let resString = `Доступные валюты:\n`
+    if (arr.length !== 0) {
+        for (let i of arr) {
+            if (i === missingCurr) {
+                continue;
+            }
+            resString += `${i}\n`;
+        }
+        return resString;
+    }
+    return 'Нет доступных валют';
+}
+
+console.log(availableCurr(['UAH', 'RUB', 'CNY'], 'CNY'));
+
+
+const shoppingMallData = {
+    shops: [
+        {
+            width: 10,
+            length: 5
+        },
+        {
+            width: 15,
+            length: 7
+        },
+        {
+            width: 20,
+            length: 5
+        },
+        {
+            width: 8,
+            length: 10
+        }
+    ],
+    height: 5,
+    moneyPer1m3: 30,
+    budget: 50000
+}
+
+function isBudgetEnough(data) {
+    const {height} = data;
+    const {moneyPer1m3} = data;
+    const {budget} = data;
+
+    let allSpase = 0
+    // for (let i in data.shops){
+    //     let width = data.shops[i].width;
+    //     let length = data.shops[i].length;
+    //
+    //     let sqare = width * length;
+    //     allSpase += sqare;
+    // }
+    data.shops.forEach(shop => {
+        allSpase += shop.width * shop.length;
+    });
+
+    let volume = allSpase * height;
+    let price = volume * moneyPer1m3;
+
+    if (price <= budget) {
+        return 'Бюджета достаточно';
+    } else{
+        return 'Бюджета недостаточно';
+    }
+}
+
+console.log(isBudgetEnough(shoppingMallData));
+
+
+const students = ['Peter', 'Andrew', 'Ann', 'Mark', 'Josh', 'Sandra', 'Cris', 'Bernard', 'Takesi', 'Sam'];
+
+function sortStudentsByGroups(arr) {
+    arr.sort();
+    const a = [], b = [], c = [], rest = [];
+
+    for (let i = 0; i < arr.length; i++){
+        if (i < 3) {
+            a.push(arr[i]);
+        } else if (i < 6) {
+            b.push(arr[i]);
+        } else if (i < 9) {
+            c.push(arr[i]);
+        } else {
+            rest.push(arr[i]);
+        }
+    }
+    return [a, b, c, `Оставшиеся студенты: ${rest.length === 0 ? '-' : rest.join(', ')}`]
+}
+
+console.log(sortStudentsByGroups(students));

@@ -13,7 +13,7 @@ function start() {
     numberOfFilms = +prompt('Сколько фильмов ты уже посмотрел?', '');
 
     // isNaN возвращает true если введется не число
-    //         пустая строка           нажал отмену           ввел нечисло
+    //         пустая строка           нажал отмену           ввел не число
     while (numberOfFilms == '' || numberOfFilms == null || isNaN(numberOfFilms)) {
         numberOfFilms = +prompt('Сколько фильмов ты уже посмотрел?', '').trim();
     }

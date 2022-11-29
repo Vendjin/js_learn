@@ -41,6 +41,7 @@ const calc = (a, b) => {
 };
 const calcShort = (a, b) => a + b;
 
+console.log('=> funcs',calcShort(5, 4));
 
 const usdCurse = 65;
 const eurCurse = 60;
