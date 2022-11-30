@@ -6,7 +6,7 @@ const options = {
         border: 'black',
         background: 'red'
     },
-    makeTest: function (){
+    makeTest: function () {
         console.log('Test')
     }
 };
@@ -19,14 +19,14 @@ options.makeTest();
 
 let counter = 0;
 for (let key in options) {
-    if (typeof options[key] == 'object'){
-        for (let nestedKey in options[key]){
+    if (typeof options[key] == 'object') {
+        for (let nestedKey in options[key]) {
             console.log(`Свойство ${nestedKey} имеет значение ${options[key][nestedKey]}`);
-            counter ++;
+            counter++;
         }
-    } else{
+    } else {
         console.log(`Свойство ${key} имеет значение ${options[key]}`);
-        counter ++;
+        counter++;
     }
 }
 console.log(counter);
@@ -37,7 +37,7 @@ console.log(Object.keys(options).length);
 
 console.log(Object.values(options));
 
-// деструктуризация - вытаскивает вложенные объекты
+// Деструктуризация - вытаскивает вложенные объекты
 const {border, background: bg} = options.colors;
 
 console.log(border);
@@ -45,7 +45,7 @@ console.log(bg);
 
 
 let desArr = {
-    a : 'a',
+    a: 'a',
     b: {
         aa: 1,
         ab: 2
@@ -53,7 +53,7 @@ let desArr = {
     c: [11, 12]
 }
 
-let {title='Test', a, b: {aa, ab}, c: [it1, it2]} = desArr;
+let {title = 'Test', a, b: {aa, ab}, c: [it1, it2]} = desArr;
 console.log(title);
 console.log(a);
 console.log(aa);
