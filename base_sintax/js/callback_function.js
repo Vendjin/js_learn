@@ -2,7 +2,7 @@ function first() {
     // do something
     setTimeout(function () {
         console.log(1);
-    }, 500);
+    }, 1);
 }
 
 function second() {
@@ -20,14 +20,13 @@ function learnJS(lang, callback) {
     callback();
 }
 
+learnJS('JavaScript',function () {
+        console.log('Я прошел этот урок');
+    });
+
+
 function done (){
     console.log('Done');
 }
-
-learnJS(
-    'JavaScript',
-    function () {
-        console.log('Я прошел этот урок');
-    });
 
 learnJS('Python', done);
