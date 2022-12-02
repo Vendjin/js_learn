@@ -9,7 +9,10 @@ console.log(typeof strObj);
 const solder = {
     health: 400,
     armor: 100,
-    sayHello: function (){
+    // sayHello: function (){
+    //     console.log('Hello');
+    // }
+    sayHello: () => {
         console.log('Hello');
     }
 };

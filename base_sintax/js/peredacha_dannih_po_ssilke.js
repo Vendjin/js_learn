@@ -62,10 +62,18 @@ const add = {
 
 console.log(Object.assign (numbers, add));
 
+// создается новый объект clone скопированный из намберс, но копия только поверхностная
 const clone = Object.assign({}, numbers);
 clone.c.x = 10;
 console.log(numbers);
 console.log(clone);
+
+let nObj = {...numbers};
+console.log("old", numbers);
+console.log("new", nObj);
+nObj.c.x = 11;
+console.log("new_change", nObj);
+console.log("old_alter_change", numbers);
 
 
 //копирование массива с помощью slice
@@ -105,3 +113,8 @@ const q = {
 
 const newObj = {...q};
 console.log(newObj);
+
+console.log('q', q);
+newObj.one = 3;
+console.log('q', q);
+console.log(newObj)

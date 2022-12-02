@@ -29,22 +29,24 @@ console.log(anotherNum);
 
 
 // function expression - создается когда код доходит до нее, можно вызвать только после объявления
-const logger = function (){
+const logger = function () {
     console.log('Hi');
 };
 
 logger();
 
-// стрелочная функция - не имеет контекста вызова
+// стрелочная функция - не имеет контекста вызова, лямбда функция в python
 const calc = (a, b) => {
     return a + b
 };
+
 const calcShort = (a, b) => a + b;
 
-console.log('=> funcs',calcShort(5, 4));
+console.log('=> funcs', calcShort(5, 4));
 
 const usdCurse = 65;
 const eurCurse = 60;
+
 function convert(curse, amount) {
     console.log(curse * amount);
 }
@@ -54,15 +56,16 @@ convert(eurCurse, 500);
 
 
 const discount = 0.9;
-function promotion(result){
-     return result * discount;
+
+function promotion(result) {
+    return result * discount;
 }
 
 console.log(promotion(100));
 
 
-function test(){
-    for (let i = 0; i < 5; i++){
+function test() {
+    for (let i = 0; i < 5; i++) {
         console.log(i);
         if (i === 3) return
     }
@@ -71,13 +74,13 @@ function test(){
 
 test();
 
-function getMathResult(number, steps){
+function getMathResult(number, steps) {
     let result = ``
-    if (typeof steps === "string" || steps <= 0){
+    if (typeof steps === "string" || steps <= 0) {
         return number;
-    }else {
+    } else {
 
-        for (let i = 1; i <= steps; i++){
+        for (let i = 1; i <= steps; i++) {
             result += `${number * i}---`;
         }
     }

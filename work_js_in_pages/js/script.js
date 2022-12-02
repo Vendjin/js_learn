@@ -94,5 +94,13 @@ hearts[0].replaceWith(circles[0]);
 // wrapper.replaceChild(circles[0], hearts[0]);
 
 
-// вставить что-то в элемент
-myDiv.innerHTML = '<h1> hello world </h1>';
+// вставить что-то в элемент, даже саму html структуру
+myDiv.innerHTML = '<h1>HELLO</h1>';
+circles[2].innerHTML = '1';
+// добавить только текст
+myDiv2.textContent = 'Hello';
+// beforebegin - вставить перед элементом
+// afterbegin - вставить в сам элемент
+// beforeend - вставить в конец элемента
+// afterend - вставить после элемента
+myDiv.insertAdjacentHTML('afterend', '<h2>Hello</h2>');
