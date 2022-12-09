@@ -7,7 +7,7 @@
 
 'use strict';
 
-// что бы точно знали что все наши дом узлы уже готовы
+// что бы скрипт ждал пока загрузится оставшееся DOM структура, дабы не произошло зависание
 window.addEventListener('DOMContentLoaded', () => {
     const box = document.querySelector('.box');
 
@@ -31,4 +31,4 @@ window.addEventListener('DOMContentLoaded', () => {
 
 // touches - информация о всех пальцах что сейчас держат
 // targetTouches
-// changedTouches 
+// changedTouches
