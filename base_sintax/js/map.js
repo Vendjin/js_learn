@@ -61,6 +61,8 @@ const goods = [];
 for (let shop of map.keys()){
     goods.push(Object.keys(shop)[0]);
 }
+
+console.log(map.keys());
 console.log(goods);
 
 for (let price of map.values()){
