@@ -92,11 +92,13 @@ const video = ['youtube', 'vimeo', 'rutube'],
 console.log(internet);
 
 // передача в функцию много элементов
+/*
 function log(a, b, c) {
     console.log(a);
     console.log(b);
     console.log(c);
 }
+*/
 
 const num = [2, 5 ,7];
 
