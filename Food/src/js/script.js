@@ -47,11 +47,19 @@ window.addEventListener('DOMContentLoaded', () => {
 
     function getTimeRemaining(endTime) {
         const t = Date.parse(endTime) - Date.parse(new Date());
-        // (1000 * 60 - кол-во мс в 1 мин) * 60 1в часе) * 24 в сутках) - сколько в сутках миллисекунд
-        const days = Math.floor(t / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((t / (1000 * 60 * 60)) % 24);
-        const minutes = Math.floor((t / (1000 / 60) % 60));
-        const seconds = Math.floor((t / 1000) % 60);
+        let days, hours, minutes, seconds;
+        if (t <= 0 ){
+            days = 0;
+            hours = 0;
+            minutes = 0;
+            seconds = 0;
+        } else{
+            // (1000 * 60 - кол-во мс в 1 мин) * 60 1в часе) * 24 в сутках) - сколько в сутках миллисекунд
+            days = Math.floor(t / (1000 * 60 * 60 * 24));
+            hours = Math.floor((t / (1000 * 60 * 60)) % 24);
+            minutes = Math.floor((t / (1000 / 60) % 60));
+            seconds = Math.floor((t / 1000) % 60);
+        }
 
         return {
             "total": t,
@@ -75,7 +83,8 @@ window.addEventListener('DOMContentLoaded', () => {
         const hours = timer.querySelector('#hours');
         const minutes = timer.querySelector('#minutes');
         const seconds = timer.querySelector('#seconds');
-        timeInterval = setInterval(updateClock, 1000);
+        // устанавливаем обновление интервала каждую секунду 1 сек = 1000 мили сек
+        const timeInterval = setInterval(updateClock, 1000);
 
         // что бы время при старте не мигало время
         updateClock();
@@ -88,7 +97,7 @@ window.addEventListener('DOMContentLoaded', () => {
             minutes.innerHTML = getZero(t.minutes);
             seconds.innerHTML = getZero(t.seconds);
 
-
+            // если наш total - deadline = 0 наступила дата, то останавливаем наш интервал
             if (t.total <= 0){
                 clearInterval(timeInterval);
             }
