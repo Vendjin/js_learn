@@ -48,12 +48,13 @@ window.addEventListener('DOMContentLoaded', () => {
     function getTimeRemaining(endTime) {
         const t = Date.parse(endTime) - Date.parse(new Date());
         let days, hours, minutes, seconds;
-        if (t <= 0 ){
+        // проверка что бы счетчик не считал после того как дата истечет
+        if (t <= 0) {
             days = 0;
             hours = 0;
             minutes = 0;
             seconds = 0;
-        } else{
+        } else {
             // (1000 * 60 - кол-во мс в 1 мин) * 60 1в часе) * 24 в сутках) - сколько в сутках миллисекунд
             days = Math.floor(t / (1000 * 60 * 60 * 24));
             hours = Math.floor((t / (1000 * 60 * 60)) % 24);
@@ -70,14 +71,15 @@ window.addEventListener('DOMContentLoaded', () => {
         };
     }
 
-    function getZero(num){
-        if (num >=0 && num < 10){
+    function getZero(num) {
+        if (num >= 0 && num < 10) {
             return `0${num}`;
         } else {
             return num;
         }
     }
-    function setClock(selector, endTime){
+
+    function setClock(selector, endTime) {
         const timer = document.querySelector(selector);
         const days = timer.querySelector('#days');
         const hours = timer.querySelector('#hours');
@@ -98,11 +100,85 @@ window.addEventListener('DOMContentLoaded', () => {
             seconds.innerHTML = getZero(t.seconds);
 
             // если наш total - deadline = 0 наступила дата, то останавливаем наш интервал
-            if (t.total <= 0){
+            if (t.total <= 0) {
                 clearInterval(timeInterval);
             }
         }
     }
 
     setClock('.timer', deadline);
+
+
+    //MODAL WINDOW
+    const modalWindow = document.querySelector('.modal');
+    const modalCloseBtn = document.querySelector('[data-close]');
+    const btnContactUs = document.querySelectorAll('[data-modal]');
+
+    function openModalWindow() {
+        /*modalWindow.classList.remove('hide');
+         modalWindow.classList.add('show');*/
+        modalWindow.classList.toggle('show')
+        // функционал отключения прокрутки
+        document.body.style.overflow = 'hidden';
+        // если пользователь сам открыл окно, то оно не будет открываться снова
+        clearInterval(modalTimerId);
+    }
+
+    function closeModalWindow() {
+        /*modalWindow.classList.add('hide');
+        modalWindow.classList.remove('show');*/
+        modalWindow.classList.toggle('show')
+        document.body.style.overflow = '';
+    }
+
+    btnContactUs.forEach(btn => {
+        btn.addEventListener('click', (event) => {
+            const target = event.target;
+
+            if (target && target.classList.contains('btn')) {
+                openModalWindow();
+            }
+        })
+    });
+
+    modalWindow.addEventListener('click', (event) => {
+        const target = event.target;
+
+        if (target === modalCloseBtn || target === modalWindow) {
+            closeModalWindow();
+        }
+    });
+
+    document.addEventListener('keydown', (event) => {
+        if (event.code === 'Escape' && modalWindow.classList.contains('show')) {
+            closeModalWindow();
+        }
+    });
+
+    // делаем всплывающие окно когда страница пролистана до определенного уровня
+    // мой вариант, но не продуманно как не работать после закрытия окна
+    /*function getHeight() {
+        let height = window.getComputedStyle(document.body).height;
+
+        return height.split('.')[0];
+    }
+
+    console.log(document.documentElement.scrollTop, Math.trunc(getHeight() * 0.7));
+
+    document.addEventListener('scroll', () =>{
+        if (document.documentElement.scrollTop  >= Math.trunc(getHeight() * 0.7)) {
+            openModalWindow();
+        }
+    });*/
+    const modalTimerId = setTimeout(openModalWindow, 3000);
+
+    function showModalByScroll(){
+        if (window.pageYOffset + document.documentElement.clientHeight >= document.documentElement.scrollHeight) {
+            openModalWindow();
+            // удаляем событие прокрутки, после того как оно выполнилось
+            window.removeEventListener('scroll', showModalByScroll);
+        }
+    }
+
+    window.addEventListener('scroll', showModalByScroll);
 });
