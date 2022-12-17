@@ -115,9 +115,9 @@ window.addEventListener('DOMContentLoaded', () => {
     const btnContactUs = document.querySelectorAll('[data-modal]');
 
     function openModalWindow() {
-        /*modalWindow.classList.remove('hide');
-         modalWindow.classList.add('show');*/
-        modalWindow.classList.toggle('show')
+        modalWindow.classList.remove('hide');
+        modalWindow.classList.add('show');
+        // modalWindow.classList.toggle('show')
         // функционал отключения прокрутки
         document.body.style.overflow = 'hidden';
         // если пользователь сам открыл окно, то оно не будет открываться снова
@@ -125,9 +125,9 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 
     function closeModalWindow() {
-        /*modalWindow.classList.add('hide');
-        modalWindow.classList.remove('show');*/
-        modalWindow.classList.toggle('show')
+        modalWindow.classList.add('hide');
+        modalWindow.classList.remove('show');
+        // modalWindow.classList.toggle('show');
         document.body.style.overflow = '';
     }
 
@@ -312,6 +312,10 @@ window.addEventListener('DOMContentLoaded', () => {
         failure: 'Что-то пошло не так...'
     }
 
+    forms.forEach(item =>{
+        postData(item);
+    });
+
     function postData(form){
         form.addEventListener('submit', (event) =>{
             event.preventDefault();
@@ -322,7 +326,7 @@ window.addEventListener('DOMContentLoaded', () => {
             form.append(statusMessageDiv);
 
             const request = new XMLHttpRequest();
-            request.open('POST', 'server.php');
+            request.open('POST', 'server1.php');
 
             // при POST заголовок не нужно давать заголовки в обычном формате не JSON
             // request.setRequestHeader('Content-type', 'multipart/form-data');
@@ -358,15 +362,11 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 
 
-    forms.forEach(item =>{
-        postData(item);
-    });
-
     function showThanksModal(message) {
         const prevModalDialog = document.querySelector('.modal__dialog');
 
         prevModalDialog.classList.add('hide');
-        // openModalWindow();
+        openModalWindow();
 
         const thanksModal = document.createElement('div');
         thanksModal.classList.add('modal__dialog');
@@ -376,8 +376,8 @@ window.addEventListener('DOMContentLoaded', () => {
                 <div class="modal__title">${message}</div>
             </div>
         `;
-        document.querySelector('.modal').append(thanksModal);
 
+        document.querySelector('.modal').append(thanksModal);
         setTimeout(() => {
             thanksModal.remove();
             prevModalDialog.classList.add('show');
