@@ -144,7 +144,7 @@ window.addEventListener('DOMContentLoaded', () => {
     modalWindow.addEventListener('click', (event) => {
         const target = event.target;
 
-        if (target.getAttribute('data-close') == ''  || target === modalWindow) {
+        if (target.getAttribute('data-close') == '' || target === modalWindow) {
             closeModalWindow();
         }
     });
@@ -244,7 +244,7 @@ window.addEventListener('DOMContentLoaded', () => {
             const element = document.createElement('div');
 
             // проверка если мы не передали классы для дива, будет автоматом подставляться
-            if (this.classes.length === 0){
+            if (this.classes.length === 0) {
                 this.element = 'menu__item';
                 element.classList.add(this.element);
             } else {
@@ -276,8 +276,7 @@ window.addEventListener('DOMContentLoaded', () => {
         9,
         '.menu .container',
         'menu__item'
-    ).
-    render();
+    ).render();
 
     new MenuCard(
         'img/tabs/elite.jpg',
@@ -303,30 +302,79 @@ window.addEventListener('DOMContentLoaded', () => {
     ).render();
 
 
-    // FORMS
+    // FORMS сделанные с помощью XMLHttpRequest
 
     const forms = document.querySelectorAll('form');
+
+    forms.forEach(item => {
+        postData(item);
+    });
+
     const messages = {
-        loading: 'Загрузка',
+        loading: 'icons/spinner.svg',
         success: 'Спасибо! Скоро с вами свяжемся',
         failure: 'Что-то пошло не так...'
     }
 
-    forms.forEach(item =>{
-        postData(item);
-    });
+    function postData(form) {
+        form.addEventListener('submit', event => {
+            event.preventDefault();
 
-    function postData(form){
+            const spinner = document.createElement('img');
+            spinner.src = messages.loading;
+            spinner.style.cssText = `
+                display: block;
+                margin: 0 auto;
+            `;
+            // устанавливаю spinner после элементов, а не в них
+            form.insertAdjacentElement('afterend', spinner);
+
+            const formData = new FormData(form);
+            const object = {};
+            formData.forEach(function (value, key) {
+                object[key] = value;
+            });
+
+            fetch('server.php', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(object)
+            }).then(data => data.text())
+                .then(data => {
+                    console.log(data);
+                    showThanksModal(messages.success);
+                    spinner.remove();
+                }).catch(() => {
+                showThanksModal(messages.failure);
+            }).finally(() => {
+                form.reset();
+            });
+
+        });
+    }
+
+    /*function postDataUseXMLHttpRequest(form){
         form.addEventListener('submit', (event) =>{
             event.preventDefault();
 
-            const statusMessageDiv = document.createElement('div');
+            // блок кода для того что бы сообщение об успехе выводилось в эту же фору
+            /!*const statusMessageDiv = document.createElement('div');
             statusMessageDiv.classList.add('status');
             statusMessageDiv.textContent = messages.loading;
-            form.append(statusMessageDiv);
+            form.append(statusMessageDiv);*!/
+
+
+            const spinner = document.createElement('img');
+            spinner.src = messages.loading;
+            spinner.style.cssText = `
+                display: block;
+                margin: 0 auto;
+            `;
+            // form.append(spinner);
+            form.insertAdjacentElement('afterend', spinner);
 
             const request = new XMLHttpRequest();
-            request.open('POST', 'server1.php');
+            request.open('POST', 'server.php');
 
             // при POST заголовок не нужно давать заголовки в обычном формате не JSON
             // request.setRequestHeader('Content-type', 'multipart/form-data');
@@ -337,14 +385,14 @@ window.addEventListener('DOMContentLoaded', () => {
             // получить все данные из формы
             const formData = new FormData(form);
 
-            // кусок для JSON, обычные данные он не нужен
+            // кусок для JSON, если хотим передавать обычный js object то он не нужен
             const object = {};
             formData.forEach(function (value, key){
                 object[key] = value;
             });
             const json = JSON.stringify(object);
 
-
+            // request.send(formData);
             request.send(json);
 
             request.addEventListener('load', () =>{
@@ -353,13 +401,15 @@ window.addEventListener('DOMContentLoaded', () => {
                     showThanksModal(messages.success);
                     // очистка полей формы, после успеха
                     form.reset();
-                    statusMessageDiv.remove();
+                    // строчка для удаления сообщения из модального окна
+                    // statusMessageDiv.remove();
+                    spinner.remove();
                 } else{
                     showThanksModal(messages.failure);
                 }
             });
         });
-    }
+    }*/
 
 
     function showThanksModal(message) {
@@ -385,4 +435,5 @@ window.addEventListener('DOMContentLoaded', () => {
             closeModalWindow();
         }, 4000);
     }
+
 });
