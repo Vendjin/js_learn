@@ -17,6 +17,12 @@ options.makeTest();
 // delete options.name;
 // console.log(options);
 
+// Object.is() - являются ли два значения различными
+// Object.keys() - массив из собственных перечисляемых свойств объекта
+// Object.values() - массив значений всех ключей
+// Object.entries() - массив перечисляемых [ключ/значение]
+
+
 let counter = 0;
 for (let key in options) {
     if (typeof options[key] == 'object') {

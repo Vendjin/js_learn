@@ -1,4 +1,5 @@
 'use strict';
+// Map – это коллекция ключ/значение, как и Object. Но основное отличие в том, что Map позволяет использовать ключи любого типа
 
 const user = {
     name: 'Alex',
@@ -21,7 +22,7 @@ const budget = [5000, 15000, 25000]
 
 const map = new Map();
 
-// в ручную добавляем в наш новый мап ключ и значение
+// set - в ручную добавляем в наш новый мап ключ и значение
 map.set(shops[0], 500);
 console.log(map)
 
@@ -32,22 +33,22 @@ shops.forEach((shop, iter) => {
 
 console.log(map);
 
-// получить значение из мапа
+// .get - получить значение из мапа
 console.log(map.get(shops[0]));
 
-// проверить имеется ли что то в элементе карты
+// .has - проверить имеется ли что то в элементе карты
 console.log(map.has(shops[0]));
 
 // удаляет из мапы что то по ключу
 // map.delete(key);
 
-// очищает мапу
+// .clear - очищает мапу
 // map.clear();
 
-// возвращает количество элементов в мапе
-map.size;
+//  .size - возвращает количество элементов в мапе
+console.log(map.size);
 
-// по своей структуре map это массив с массивами [[]]
+// по своей структуре map это массив с массивами [[]], создаем мап с уже имеющимися значениями и прибавляем после set
 const secondMap = new Map([
     [{paper: 400}, 8000]
 ])
@@ -57,20 +58,21 @@ shops.forEach((shop, iter) => {
 })
 console.log(secondMap);
 
+
 const goods = [];
 for (let shop of map.keys()){
     goods.push(Object.keys(shop)[0]);
 }
 
 console.log(map.keys());
-console.log(goods);
+console.log("keys", goods);
 
 for (let price of map.values()){
-    console.log(price);
+    console.log("values", price);
 }
 
 for (let price of map.entries()){
-    console.log(price);
+    console.log("entries", price);
 }
 
 for (let [shop,price] of map.entries()){
@@ -80,6 +82,7 @@ for (let [shop,price] of map.entries()){
 map.forEach((value, key, map) =>{
     console.log(value, key)
 })
+
 
 // превращаем обычный объект в мапу
 const userObj = {
@@ -100,3 +103,10 @@ console.log(newUserObj);
 
 const o = Object.fromEntries(map);
 console.log(o);
+
+
+
+// Object.is() - являются ли два значения различными
+// Object.keys() - массив из собственных перечисляемых свойств объекта
+// Object.values() - массив значений всех ключей
+// Object.entries() - массив перечисляемых [ключ/значение]
