@@ -20,3 +20,5 @@ console.log(obj);
 // глубокие копии
 const clone = JSON.parse(JSON.stringify(persone));
 console.log(clone);
+
+const obj = [["name", "фывыфв" ], ["phone" , "1231413"]];

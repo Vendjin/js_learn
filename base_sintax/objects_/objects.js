@@ -59,6 +59,7 @@ let desArr = {
     c: [11, 12]
 }
 
+// Деструктуризация
 let {title = 'Test', a, b: {aa, ab}, c: [it1, it2]} = desArr;
 console.log(title);
 console.log(a);
@@ -66,3 +67,8 @@ console.log(aa);
 console.log(ab);
 console.log(it1);
 console.log(it2);
+
+
+// Массив массивов превратить в объект
+const arr = [['a', 1], ['b', '2'], ['c', true]];
+console.log(Object.fromEntries(arr));

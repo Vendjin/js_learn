@@ -28,9 +28,9 @@ console.log(box.getBoundingClientRect());
 console.log(box.getBoundingClientRect().top);
 
 const style = window.getComputedStyle(box);
-console.log(style);
-console.log(style.height);
-console.log(style.width);
+console.log('getComputedStyle', style);
+console.log('getComputedStyle', style.height);
+console.log('getComputedStyle',style.width);
 
 console.log(document.documentElement.scrollTop);
 
