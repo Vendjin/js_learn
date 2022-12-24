@@ -524,6 +524,7 @@ window.addEventListener('DOMContentLoaded', () => {
     const slidesWrapper = document.querySelector('.offer__slider-wrapper');
     const slidesField = document.querySelector('.offer__slider-inner');
     const widthSlide = window.getComputedStyle(slidesWrapper).width;
+    const slider = document.querySelector('.offer__slider');
 
     let slideIndex = 1;
     let offset = 0;
@@ -590,8 +591,67 @@ window.addEventListener('DOMContentLoaded', () => {
         slide.style.width = widthSlide;
     });
 
+    // делаем точечки под слайдером
+    const indicators = document.createElement('ol');
+    const dots = [];
+    slider.style.position = 'relative';
+
+    indicators.classList.add('carousel-indicators');
+    indicators.style.cssText = `
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 15;
+        display: flex;
+        justify-content: center;
+        margin-right: 15%;
+        margin-left: 15%;
+        list-style: none;
+    `;
+    slider.append(indicators);
+
+    for (let iter = 0; iter <slides.length; iter++){
+        const dot = document.createElement('li');
+        dot.setAttribute('data-slide-to', iter + 1);
+        dot.style.cssText = `
+            box-sizing: content-box;
+            flex: 0 1 auto;
+            width: 30px;
+            height: 6px;
+            margin-right: 3px;
+            margin-left: 3px;
+            cursor: pointer;
+            background-color: #fff;
+            background-clip: padding-box;
+            border-top: 10px solid transparent;
+            border-bottom: 10px solid transparent;
+            opacity: .5;
+            transition: opacity .6s ease;
+        `;
+        if (iter === 0){
+            dot.style.opacity = '1';
+        }
+        indicators.append(dot);
+        dots.push(dot);
+    }
+
+    function showNumberSlide(slides, slideIndex, currentPosition){
+        if (slides.length < 10) {
+            currentPosition.textContent = `0${slideIndex}`;
+        } else {
+            currentPosition.textContent = `${slideIndex}`;
+        }
+    }
+
+    function showCurrentDot(dots, slideIndex){
+        // ставим всем точкам прозрачность по умолчанию
+        dots.forEach(dot => dot.style.opacity = '.5');
+        dots[slideIndex - 1].style.opacity = '1';
+    }
+
     next.addEventListener('click', () => {
-        // если у нас последний слайд, а это (4слайда + 650) = 2600, то последний слайд получается 2600 - 650
+        // если у нас последний слайд, а это (4слайда * 650) = 2600, то последний слайд получается 2600 - 650
         // а мы работаем с пикселями, те, если мы достигли отметки в 1950px, то отматываем назад
         if (offset === +widthSlide.slice(0, widthSlide.length - 2) * (slides.length - 1)) {
             offset = 0;
@@ -607,12 +667,13 @@ window.addEventListener('DOMContentLoaded', () => {
         } else {
             slideIndex++;
         }
-
-        if (slides.length < 10) {
+        showNumberSlide(slides, slideIndex, current);
+        /*if (slides.length < 10) {
             current.textContent = `0${slideIndex}`;
         } else {
             current.textContent = `${slideIndex}`;
-        }
+        }*/
+        showCurrentDot(dots, slideIndex);
     });
 
     previous.addEventListener('click', () => {
@@ -630,11 +691,23 @@ window.addEventListener('DOMContentLoaded', () => {
             slideIndex--;
         }
 
-        if (slides.length < 10) {
-            current.textContent = `0${slideIndex}`;
-        } else {
-            current.textContent = `${slideIndex}`;
-        }
+        showNumberSlide(slides, slideIndex, current);
+
+        showCurrentDot(dots, slideIndex);
+    });
+
+    dots.forEach(dot => {
+        dot.addEventListener('click', event =>{
+            const slideTo = event.target.getAttribute('data-slide-to');
+
+            slideIndex = slideTo;
+            offset = +widthSlide.slice(0, widthSlide.length - 2) * (slideTo - 1);
+
+            slidesField.style.transform = `translateX(-${offset}px)`;
+
+            showNumberSlide(slides, slideIndex, current);
+            showCurrentDot(dots, slideIndex);
+        });
     });
 
     // мой слайдер
