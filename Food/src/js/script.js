@@ -43,7 +43,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
 
     //TIMER
-    const deadline = '2023-01-01';
+    const deadline = '2023-04-16';
 
     function getTimeRemaining(endTime) {
         const t = Date.parse(endTime) - Date.parse(new Date());
@@ -302,6 +302,7 @@ window.addEventListener('DOMContentLoaded', () => {
         '.menu .container',
     ).render();*/
 
+    // получить данные из db.json из меню
     const getResource = async (url) => {
         const result = await fetch(url);
 
@@ -320,7 +321,7 @@ window.addEventListener('DOMContentLoaded', () => {
     //         });
     //     });
 
-    // пример на axios
+    // пример на axios просто так для примера, на странице не используется
     axios.get('http://localhost:3000/menu')
         .then(data => {
             data.data.forEach(({img, altimg, title, descr, price}) => {
@@ -356,7 +357,7 @@ window.addEventListener('DOMContentLoaded', () => {
         return await result.json();
     };
 
-    // первый вариант с fetch
+    // первый вариант с FETCH
     /*function bindPostData(form) {
         form.addEventListener('submit', event => {
             event.preventDefault();
@@ -515,6 +516,7 @@ window.addEventListener('DOMContentLoaded', () => {
     });
 
 
+
     //SLIDER
     const slides = document.querySelectorAll('.offer__slide');
     const previous = document.querySelector('.offer__slider-prev');
@@ -611,7 +613,7 @@ window.addEventListener('DOMContentLoaded', () => {
     `;
     slider.append(indicators);
 
-    for (let iter = 0; iter <slides.length; iter++){
+    for (let iter = 0; iter < slides.length; iter++) {
         const dot = document.createElement('li');
         dot.setAttribute('data-slide-to', iter + 1);
         dot.style.cssText = `
@@ -629,14 +631,14 @@ window.addEventListener('DOMContentLoaded', () => {
             opacity: .5;
             transition: opacity .6s ease;
         `;
-        if (iter === 0){
+        if (iter === 0) {
             dot.style.opacity = '1';
         }
         indicators.append(dot);
         dots.push(dot);
     }
 
-    function showNumberSlide(slides, slideIndex, currentPosition){
+    function showNumberSlide(slides, slideIndex, currentPosition) {
         if (slides.length < 10) {
             currentPosition.textContent = `0${slideIndex}`;
         } else {
@@ -644,7 +646,7 @@ window.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    function showCurrentDot(dots, slideIndex){
+    function showCurrentDot(dots, slideIndex) {
         // ставим всем точкам прозрачность по умолчанию
         dots.forEach(dot => dot.style.opacity = '.5');
         dots[slideIndex - 1].style.opacity = '1';
@@ -678,7 +680,9 @@ window.addEventListener('DOMContentLoaded', () => {
 
     previous.addEventListener('click', () => {
         if (offset === 0) {
-            offset = +widthSlide.slice(0, widthSlide.length - 2) * (slides.length - 1);
+            offset = +widthSlide.replace(/\D/g, '') * (slides.length-1);
+            // старый вариант через срез
+            /*offset = +widthSlide.slice(0, widthSlide.length - 2) * (slides.length - 1);*/
         } else {
             offset -= +widthSlide.slice(0, widthSlide.length - 2);
         }
@@ -697,7 +701,7 @@ window.addEventListener('DOMContentLoaded', () => {
     });
 
     dots.forEach(dot => {
-        dot.addEventListener('click', event =>{
+        dot.addEventListener('click', event => {
             const slideTo = event.target.getAttribute('data-slide-to');
 
             slideIndex = slideTo;
@@ -765,4 +769,33 @@ window.addEventListener('DOMContentLoaded', () => {
         }
     });*/
 
+
+    // КАЛЬКУЛЯТОР
+    const result = document.querySelector('.calculating__result span');
+    let sex, height, weight, age, ratio;
+
+    function calcTotal(){
+        if(!sex || !height || !weight || !age || !ratio){
+            result.textContent = `____`;
+            return;
+        }
+
+        if (sex === 'female') {
+            result.textContent = (447.6 + (9.2 * weight) + (3.1 * height) - (4.3 * age)) * ratio;
+        } else {
+            result.textContent = (88.36 + (13.4 * weight) + (4.8 * height) - (5.7 * age)) * ratio;
+        }
+
+    }
+
+    calcTotal();
+    function getStaticInformation(parentSelector, activeClass) {
+        const elements = document.querySelectorAll(`${parentSelector} div`);
+
+        document.querySelector(parentSelector).addEventListener('click', event =>{
+            if (event.target.getAttribute('data-ratio')){
+                ratio = +event.target.getAttribute('data-ratio');
+            }
+        })
+    }
 });
