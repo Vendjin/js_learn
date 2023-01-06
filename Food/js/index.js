@@ -317,8 +317,38 @@ window.addEventListener('DOMContentLoaded', () => {
 
     // КАЛЬКУЛЯТОР
     const result = document.querySelector('.calculating__result span');
-    let sex = 'female', height, weight, age, ratio = 1.375;
+    let sex, height, weight, age, ratio;
 
+    if (localStorage.getItem('sex')){
+        sex = localStorage.getItem('sex');
+    } else {
+        sex = 'female';
+        localStorage.setItem('sex', sex);
+    }
+
+    if (localStorage.getItem('ratio')){
+        ratio = localStorage.getItem('ratio');
+    } else {
+        ratio = 1.375;
+        localStorage.setItem('ratio',ratio);
+    }
+
+    function initLocalSettings(selector, activeClass){
+        const elements = document.querySelectorAll(selector);
+
+        elements.forEach(elem => {
+            elem.classList.remove(activeClass);
+            if (elem.getAttribute('id') === localStorage.getItem('sex')){
+                elem.classList.add(activeClass);
+            }
+            if (elem.getAttribute('data-ratio') === localStorage.getItem('ratio')){
+                elem.classList.add(activeClass);
+            }
+        });
+    }
+
+    initLocalSettings('#gender div', 'calculating__choose-item_active');
+    initLocalSettings('.calculating__choose_big div', 'calculating__choose-item_active');
     function calcTotal(){
         if(!sex || !height || !weight || !age || !ratio){
             result.textContent = `____`;
@@ -336,15 +366,17 @@ window.addEventListener('DOMContentLoaded', () => {
     calcTotal();
 
     // делаю функцию тк блоки пол и физическая активность в принципе похожи по своей сущности, только разный текст
-    function getStaticInformation(parentSelector, activeClass) {
-        const elements = document.querySelectorAll(`${parentSelector} div`);
+    function getStaticInformation(selector, activeClass) {
+        const elements = document.querySelectorAll(selector);
 
         elements.forEach(elem => {
-            elem.addEventListener('click', event =>{
-                if (event.target.getAttribute('data-ratio')){
+            elem.addEventListener('click', event => {
+                if (event.target.getAttribute('data-ratio')) {
                     ratio = +event.target.getAttribute('data-ratio');
+                    localStorage.setItem('ratio', ratio);
                 } else {
                     sex = event.target.getAttribute('id');
+                    localStorage.setItem('sex', sex);
                 }
 
                 elements.forEach(elem => {
@@ -357,8 +389,11 @@ window.addEventListener('DOMContentLoaded', () => {
                 calcTotal();
             });
         });
-        // из-за делегирования получается баг, что можно выбрать и пустые пространства, поэтому придется отказаться
-        /*document.querySelector(parentSelector).addEventListener('click', event =>{
+    }
+    // из-за делегирования получается баг, что можно выбрать и пустые пространства, поэтому придется отказаться
+    /*function getStaticInformation(parentSelector, activeClass) {
+        const elements = document.querySelectorAll(`${parentSelector} div`);
+        document.querySelector(parentSelector).addEventListener('click', event =>{
             if (event.target.getAttribute('data-ratio')){
                 ratio = +event.target.getAttribute('data-ratio');
             } else {
@@ -374,16 +409,23 @@ window.addEventListener('DOMContentLoaded', () => {
 
             // вызываем каждый раз calcTotal(); для того, что бы перерасчеты произовдились после каждого изменения
             calcTotal();
-        });*/
-    }
+        });
+    }*/
 
-    getStaticInformation('#gender', 'calculating__choose-item_active');
-    getStaticInformation('.calculating__choose_big', 'calculating__choose-item_active');
+    getStaticInformation('#gender div', 'calculating__choose-item_active');
+    getStaticInformation('.calculating__choose_big div', 'calculating__choose-item_active');
 
     function getDynamicInformation(selector){
         const input = document.querySelector(selector);
 
         input.addEventListener('input', () =>{
+            // проверка на то что были введены только цифры
+            if (input.value.match(/\D/g)){
+                input.style.border = '1px solid red';
+            } else {
+                input.style.border = 'none';
+            }
+
             switch (input.getAttribute('id')){
                 case 'height':
                     height = +input.value;
