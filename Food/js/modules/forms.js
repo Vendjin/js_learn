@@ -1,3 +1,5 @@
+import {openModalWindow} from "./modal";
+import {closeModalWindow} from "./modal";
 function forms(){
     const messages = {
         loading: 'icons/spinner.svg',
@@ -180,4 +182,4 @@ function forms(){
     });
 }
 
-module.exports = forms;
+export default forms;

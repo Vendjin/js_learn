@@ -1,46 +1,57 @@
-function modal(){
-    const modalWindow = document.querySelector('.modal');
-// const modalCloseBtn = document.querySelector('[data-close]');
-    const btnContactUs = document.querySelectorAll('[data-modal]');
+function openModalWindow(modalNode, modalTimerId) {
+    const modalWindow = document.querySelector(modalNode);
 
-    function openModalWindow() {
-        modalWindow.classList.remove('hide');
-        modalWindow.classList.add('show');
-        // modalWindow.classList.toggle('show')
-        // функционал отключения прокрутки
-        document.body.style.overflow = 'hidden';
-        // если пользователь сам открыл окно, то оно не будет открываться снова
+    modalWindow.classList.remove('hide');
+    modalWindow.classList.add('show');
+    // modalWindow.classList.toggle('show')
+    // функционал отключения прокрутки
+    document.body.style.overflow = 'hidden';
+    // если пользователь сам открыл окно, то оно не будет открываться снова
+    if (modalTimerId){
         clearInterval(modalTimerId);
     }
 
-    function closeModalWindow() {
-        modalWindow.classList.add('hide');
-        modalWindow.classList.remove('show');
-        // modalWindow.classList.toggle('show');
-        document.body.style.overflow = '';
-    }
+}
+
+function closeModalWindow(modalNode) {
+    const modalWindow = document.querySelector(modalNode);
+
+    modalWindow.classList.add('hide');
+    modalWindow.classList.remove('show');
+    // modalWindow.classList.toggle('show');
+    document.body.style.overflow = '';
+}
+
+function modal(buttonNode, modalNode, modalTimerId){
+    const modal = document.querySelector(modalNode);
+// const modalCloseBtn = document.querySelector('[data-close]');
+    const btnContactUs = document.querySelectorAll(buttonNode);
+
+
 
     btnContactUs.forEach(btn => {
+        // пример вызова без проверки
+        // btn.addEventListener('click',() => openModalWindow(modalNode, modalTimerId));
         btn.addEventListener('click', (event) => {
             const target = event.target;
 
             if (target && target.classList.contains('btn')) {
-                openModalWindow();
+                openModalWindow(modalNode);
             }
         })
     });
 
-    modalWindow.addEventListener('click', (event) => {
+    modal.addEventListener('click', (event) => {
         const target = event.target;
 
-        if (target.getAttribute('data-close') == '' || target === modalWindow) {
-            closeModalWindow();
+        if (target.getAttribute('data-close') == '' || target === modal) {
+            closeModalWindow(modalNode);
         }
     });
 
     document.addEventListener('keydown', (event) => {
-        if (event.code === 'Escape' && modalWindow.classList.contains('show')) {
-            closeModalWindow();
+        if (event.code === 'Escape' && modal.classList.contains('show')) {
+            closeModalWindow(modalNode);
         }
     });
 
@@ -59,11 +70,12 @@ function modal(){
             openModalWindow();
         }
     });*/
-    const modalTimerId = setTimeout(openModalWindow, 50000);
+    // переносим строку ниже в наш script.js
+    // const modalTimerId = setTimeout(openModalWindow, 50000);
 
     function showModalByScroll() {
         if (window.pageYOffset + document.documentElement.clientHeight >= document.documentElement.scrollHeight) {
-            openModalWindow();
+            openModalWindow(modalNode, modalTimerId);
             // удаляем событие прокрутки, после того как оно выполнилось
             window.removeEventListener('scroll', showModalByScroll);
         }
@@ -72,4 +84,6 @@ function modal(){
     window.addEventListener('scroll', showModalByScroll);
 }
 
-module.exports = modal;
+export default modal;
+export {closeModalWindow};
+export {openModalWindow};
