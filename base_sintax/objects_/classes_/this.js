@@ -33,9 +33,12 @@ function User(name, id){
     }
 }
 
+console.log(typeof User);
+
 // 3 this в конструкторах и классах - это новый экземпляр объекта
 let  ivan = new User('Ivan', 23);
 console.log(ivan);
+console.log(typeof ivan);
 
 // 4 Ручное присвоение this функции через call, applay, bind
 function sayName(surname) {
@@ -59,8 +62,8 @@ const double = count.bind(2);
 
 console.log(double(3))
 
-const btn = document.querySelector("button");
 
+const btn = document.querySelector("button");
 btn.addEventListener('click', function (evt){
     console.log(evt.target);
     console.log(this);
