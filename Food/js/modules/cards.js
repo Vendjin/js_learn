@@ -1,5 +1,75 @@
-const menu = document.querySelector('.menu__field');
-const menuItems = menu.querySelectorAll('.menu__item');
+function cards() {
+    const menu = document.querySelector('.menu__field');
+    const menuItems = menu.querySelectorAll('.menu__item');
+
+
+    class MenuCard {
+        constructor(src, alt, title, description, price, parentSelector, ...classes) {
+            this.src = src;
+            this.alt = alt;
+            this.title = title;
+            this.description = description;
+            this.price = price;
+            this.transfer = 65;
+            this.changeToRUB();
+            this.parentSelector = document.querySelector(parentSelector);
+            this.classes = classes;
+        }
+
+        changeToRUB() {
+            this.price = this.price * this.transfer;
+        }
+
+        render() {
+            const element = document.createElement('div');
+
+            // проверка если мы не передали классы для дива, будет автоматом подставляться
+            if (this.classes.length === 0) {
+                this.element = 'menu__item';
+                element.classList.add(this.element);
+            } else {
+                this.classes.forEach(className => element.classList.add(className));
+            }
+
+            element.innerHTML = `
+            <img src="${this.src}" alt="${this.alt}">
+            <h3 class="menu__item-subtitle">${this.title}</h3>
+            <div class="menu__item-descr">${this.description}</div>
+            <div class="menu__item-divider"></div>
+            <div class="menu__item-price">
+                <div class="menu__item-cost">Цена:</div>
+                <div class="menu__item-total"><span>${this.price}</span> руб/день</div>
+            </div>
+            `;
+
+            this.parentSelector.append(element);
+        }
+    }
+
+
+// получить данные из db.json из меню
+    const getResource = async (url) => {
+        const result = await fetch(url);
+
+        if (!result.ok) {
+            throw new Error(`Could not fetch ${url}, status: ${result.status}`);
+        }
+
+        return await result.json();
+    }
+
+
+    getResource('http://localhost:3000/menu')
+        .then(data => {
+            // применяем деструктуризацию
+            data.forEach(({img, altimg, title, descr, price}) => {
+                new MenuCard(img, altimg, title, descr, price, '.menu .container').render()
+            });
+        });
+
+}
+
+module.exports = cards;
 
 // мой вариант
 /*class MenuCard {
@@ -37,48 +107,6 @@ const newMenuCard = new MenuCard(
     600);
 
 newMenuCard.addMenuCard();*/
-class MenuCard {
-    constructor(src, alt, title, description, price, parentSelector, ...classes) {
-        this.src = src;
-        this.alt = alt;
-        this.title = title;
-        this.description = description;
-        this.price = price;
-        this.transfer = 65;
-        this.changeToRUB();
-        this.parentSelector = document.querySelector(parentSelector);
-        this.classes = classes;
-    }
-
-    changeToRUB() {
-        this.price = this.price * this.transfer;
-    }
-
-    render() {
-        const element = document.createElement('div');
-
-        // проверка если мы не передали классы для дива, будет автоматом подставляться
-        if (this.classes.length === 0) {
-            this.element = 'menu__item';
-            element.classList.add(this.element);
-        } else {
-            this.classes.forEach(className => element.classList.add(className));
-        }
-
-        element.innerHTML = `
-            <img src="${this.src}" alt="${this.alt}">
-            <h3 class="menu__item-subtitle">${this.title}</h3>
-            <div class="menu__item-descr">${this.description}</div>
-            <div class="menu__item-divider"></div>
-            <div class="menu__item-price">
-                <div class="menu__item-cost">Цена:</div>
-                <div class="menu__item-total"><span>${this.price}</span> руб/день</div>
-            </div>
-            `;
-
-        this.parentSelector.append(element);
-    }
-}
 
 // ручная инициализация класса
 /*new MenuCard(
@@ -116,13 +144,17 @@ new MenuCard(
     '.menu .container',
 ).render();*/
 
-// получить данные из db.json из меню
-const getResource = async (url) => {
-    const result = await fetch(url);
-
-    if (!result.ok) {
-        throw new Error(`Could not fetch ${url}, status: ${result.status}`);
-    }
-
-    return await result.json();
-}
+// пример на axios заполнения карточек меню
+/*axios.get('http://localhost:3000/menu')
+    .then(data => {
+        data.data.forEach(({img, altimg, title, descr, price}) => {
+            new MenuCard(
+                img,
+                altimg,
+                title,
+                descr,
+                price,
+                '.menu .container'
+            ).render()
+        });
+    });*/

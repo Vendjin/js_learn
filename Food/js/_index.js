@@ -1,5 +1,5 @@
-window.addEventListener('DOMContentLoaded', () => {
-    const tabsParent = document.querySelector('.tabheader__items');
+/*window.addEventListener('DOMContentLoaded', () => {
+    /!*const tabsParent = document.querySelector('.tabheader__items');
 
     // TABS
     // сначала скрываем первично слайды, а после отображаем первый слайд
@@ -18,19 +18,19 @@ window.addEventListener('DOMContentLoaded', () => {
                 }
             });
         }
-    });
+    });*!/
 
 
     //TIMER
-    setClock('.timer', deadline);
+    /!*setClock('.timer', deadline);*!/
 
 
     //MODAL WINDOW
-    window.addEventListener('scroll', showModalByScroll);
+    /!*window.addEventListener('scroll', showModalByScroll);*!/
 
 
     // MENU CARD
-    getResource('http://localhost:3000/menu')
+    /!*getResource('http://localhost:3000/menu')
         .then(data => {
             // применяем деструктуризацию
             data.forEach(({img, altimg, title, descr, price}) => {
@@ -39,7 +39,7 @@ window.addEventListener('DOMContentLoaded', () => {
         });
 
     // пример на axios заполнения карточек меню
-    /*axios.get('http://localhost:3000/menu')
+    /!*axios.get('http://localhost:3000/menu')
         .then(data => {
             data.data.forEach(({img, altimg, title, descr, price}) => {
                 new MenuCard(
@@ -51,19 +51,19 @@ window.addEventListener('DOMContentLoaded', () => {
                     '.menu .container'
                 ).render()
             });
-        });*/
+        });*!/!*!/
 
     // FORMS
-    const forms = document.querySelectorAll('form');
+/!*    const forms = document.querySelectorAll('form');
 
     forms.forEach(item => {
         bindPostData(item);
-    });
+    });*!/
 
 
 
     //SLIDER
-    const slides = document.querySelectorAll('.offer__slide');
+    /!*const slides = document.querySelectorAll('.offer__slide');
     const previous = document.querySelector('.offer__slider-prev');
     const next = document.querySelector('.offer__slider-next');
     const total = document.querySelector('#total');
@@ -77,7 +77,7 @@ window.addEventListener('DOMContentLoaded', () => {
     let offset = 0;
 
     //SLIDER v1
-    /*showSlides(slideIndex);
+    /!*showSlides(slideIndex);
         if (slides.length < 10){
             total.textContent = `0${slides.length}`;
         }else{
@@ -114,7 +114,7 @@ window.addEventListener('DOMContentLoaded', () => {
     next.addEventListener('click', () => {
         plusSlides(1);
         console.log(slideIndex)
-    })*/
+    })*!/
 
     //SLIDER v2
     // помещаем все наши слайдеры в slidesField для этого надо рассчитать его ширину
@@ -215,11 +215,11 @@ window.addEventListener('DOMContentLoaded', () => {
             slideIndex++;
         }
         showNumberSlide(slides, slideIndex, current);
-        /*if (slides.length < 10) {
+        /!*if (slides.length < 10) {
             current.textContent = `0${slideIndex}`;
         } else {
             current.textContent = `${slideIndex}`;
-        }*/
+        }*!/
         showCurrentDot(dots, slideIndex);
     });
 
@@ -227,7 +227,7 @@ window.addEventListener('DOMContentLoaded', () => {
         if (offset === 0) {
             offset = +widthSlide.replace(/\D/g, '') * (slides.length-1);
             // старый вариант через срез
-            /*offset = +widthSlide.slice(0, widthSlide.length - 2) * (slides.length - 1);*/
+            /!*offset = +widthSlide.slice(0, widthSlide.length - 2) * (slides.length - 1);*!/
         } else {
             offset -= +widthSlide.slice(0, widthSlide.length - 2);
         }
@@ -257,10 +257,10 @@ window.addEventListener('DOMContentLoaded', () => {
             showNumberSlide(slides, slideIndex, current);
             showCurrentDot(dots, slideIndex);
         });
-    });
+    });*!/
 
     // мой слайдер
-    /*const offerSlider = document.querySelector('.offer__slider');
+    /!*const offerSlider = document.querySelector('.offer__slider');
     const current = document.getElementById('current');
     const total = document.getElementById('total');
     const slide = offerSlider.querySelectorAll('.offer__slide');
@@ -312,13 +312,15 @@ window.addEventListener('DOMContentLoaded', () => {
             hideOfferSlide();
             showOfferSlide(iterator('next'));
         }
-    });*/
+    });*!/
 
 
     // КАЛЬКУЛЯТОР
-    const result = document.querySelector('.calculating__result span');
+    /!*const result = document.querySelector('.calculating__result span');
     let sex, height, weight, age, ratio;
 
+
+    // устанавливаем стартовые значение по умолчанию в localStorage
     if (localStorage.getItem('sex')){
         sex = localStorage.getItem('sex');
     } else {
@@ -332,6 +334,7 @@ window.addEventListener('DOMContentLoaded', () => {
         ratio = 1.375;
         localStorage.setItem('ratio',ratio);
     }
+
 
     function initLocalSettings(selector, activeClass){
         const elements = document.querySelectorAll(selector);
@@ -391,7 +394,7 @@ window.addEventListener('DOMContentLoaded', () => {
         });
     }
     // из-за делегирования получается баг, что можно выбрать и пустые пространства, поэтому придется отказаться
-    /*function getStaticInformation(parentSelector, activeClass) {
+    /!*function getStaticInformation(parentSelector, activeClass) {
         const elements = document.querySelectorAll(`${parentSelector} div`);
         document.querySelector(parentSelector).addEventListener('click', event =>{
             if (event.target.getAttribute('data-ratio')){
@@ -410,7 +413,7 @@ window.addEventListener('DOMContentLoaded', () => {
             // вызываем каждый раз calcTotal(); для того, что бы перерасчеты произовдились после каждого изменения
             calcTotal();
         });
-    }*/
+    }*!/
 
     getStaticInformation('#gender div', 'calculating__choose-item_active');
     getStaticInformation('.calculating__choose_big div', 'calculating__choose-item_active');
@@ -444,7 +447,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
     getDynamicInformation('#height');
     getDynamicInformation('#weight');
-    getDynamicInformation('#age');
+    getDynamicInformation('#age');*!/
 
 
-});
+});*/
