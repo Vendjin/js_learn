@@ -6,7 +6,7 @@ function openModalWindow(modalNode, modalTimerId) {
     // modalWindow.classList.toggle('show')
     // функционал отключения прокрутки
     document.body.style.overflow = 'hidden';
-    // если пользователь сам открыл окно, то оно не будет открываться снова
+    // если пользователь сам открыл окно, то оно не будет открываться снова и если таймер был передан
     if (modalTimerId){
         clearInterval(modalTimerId);
     }
@@ -30,8 +30,13 @@ function modal(buttonNode, modalNode, modalTimerId){
 
 
     btnContactUs.forEach(btn => {
-        // пример вызова без проверки
+        // как было раньше
+        // btn.addEventListener('click', openModalWindow);
+
+        // пример вызова без проверки, мы должны передать в обработчик колбек функцию, которая сама вызывается при клике
+        // которая уже вызовет нашу функцию openModalWindow
         // btn.addEventListener('click',() => openModalWindow(modalNode, modalTimerId));
+
         btn.addEventListener('click', (event) => {
             const target = event.target;
 

@@ -1,3 +1,5 @@
+import {getResource} from "../services/services";
+
 function cards() {
     const menu = document.querySelector('.menu__field');
     const menuItems = menu.querySelectorAll('.menu__item');
@@ -44,18 +46,6 @@ function cards() {
 
             this.parentSelector.append(element);
         }
-    }
-
-
-// получить данные из db.json из меню
-    const getResource = async (url) => {
-        const result = await fetch(url);
-
-        if (!result.ok) {
-            throw new Error(`Could not fetch ${url}, status: ${result.status}`);
-        }
-
-        return await result.json();
     }
 
 

@@ -1,25 +1,13 @@
 import {openModalWindow} from "./modal";
 import {closeModalWindow} from "./modal";
-function forms(){
+import {postData} from "../services/services";
+
+function forms(formSelector, modalTimerId){
     const messages = {
         loading: 'icons/spinner.svg',
         success: 'Спасибо! Скоро с вами свяжемся',
         failure: 'Что-то пошло не так...'
     }
-
-    // функция с каким то асинхронным кодом используем асинхрон, для того что бы загружать/выгружать данные
-    const postData = async (url, dataJSON) => {
-        // await - ожидает пока вернется результат запроса
-        const result = await fetch(url, {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: dataJSON
-        });
-
-        // .json() – декодирует ответ в формате JSON в обычный js object,
-        // тоже ждем пока распарсится json и только потом его вернем
-        return await result.json();
-    };
 
 // первый вариант с FETCH
     /*function bindPostData(form) {
@@ -155,7 +143,7 @@ function forms(){
         const prevModalDialog = document.querySelector('.modal__dialog');
 
         prevModalDialog.classList.add('hide');
-        openModalWindow();
+        openModalWindow(formSelector, modalTimerId);
 
         const thanksModal = document.createElement('div');
         thanksModal.classList.add('modal__dialog');
@@ -166,12 +154,12 @@ function forms(){
             </div>
         `;
 
-        document.querySelector('.modal').append(thanksModal);
+        document.querySelector(formSelector).append(thanksModal);
         setTimeout(() => {
             thanksModal.remove();
             prevModalDialog.classList.add('show');
             prevModalDialog.classList.remove('hide');
-            closeModalWindow();
+            closeModalWindow(formSelector);
         }, 4000);
     }
 

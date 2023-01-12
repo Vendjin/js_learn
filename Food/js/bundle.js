@@ -161,6 +161,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var _services_services__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../services/services */ "./js/services/services.js");
+
+
 function cards() {
     const menu = document.querySelector('.menu__field');
     const menuItems = menu.querySelectorAll('.menu__item');
@@ -210,19 +213,7 @@ function cards() {
     }
 
 
-// получить данные из db.json из меню
-    const getResource = async (url) => {
-        const result = await fetch(url);
-
-        if (!result.ok) {
-            throw new Error(`Could not fetch ${url}, status: ${result.status}`);
-        }
-
-        return await result.json();
-    }
-
-
-    getResource('http://localhost:3000/menu')
+    (0,_services_services__WEBPACK_IMPORTED_MODULE_0__.getResource)('http://localhost:3000/menu')
         .then(data => {
             // применяем деструктуризацию
             data.forEach(({img, altimg, title, descr, price}) => {
@@ -335,28 +326,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _modal__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modal */ "./js/modules/modal.js");
+/* harmony import */ var _services_services__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../services/services */ "./js/services/services.js");
 
 
-function forms(){
+
+
+function forms(formSelector, modalTimerId){
     const messages = {
         loading: 'icons/spinner.svg',
         success: 'Спасибо! Скоро с вами свяжемся',
         failure: 'Что-то пошло не так...'
     }
-
-    // функция с каким то асинхронным кодом используем асинхрон, для того что бы загружать/выгружать данные
-    const postData = async (url, dataJSON) => {
-        // await - ожидает пока вернется результат запроса
-        const result = await fetch(url, {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: dataJSON
-        });
-
-        // .json() – декодирует ответ в формате JSON в обычный js object,
-        // тоже ждем пока распарсится json и только потом его вернем
-        return await result.json();
-    };
 
 // первый вариант с FETCH
     /*function bindPostData(form) {
@@ -415,7 +395,7 @@ function forms(){
             после превращаем в Object, а его превращаем в JSON*/
             const dataJSON = JSON.stringify(Object.fromEntries(formData.entries()));
 
-            postData('http://localhost:3000/requests', dataJSON)
+            (0,_services_services__WEBPACK_IMPORTED_MODULE_1__.postData)('http://localhost:3000/requests', dataJSON)
                 .then(data => {
                     console.log(data);
                     showThanksModal(messages.success);
@@ -492,7 +472,7 @@ function forms(){
         const prevModalDialog = document.querySelector('.modal__dialog');
 
         prevModalDialog.classList.add('hide');
-        (0,_modal__WEBPACK_IMPORTED_MODULE_0__.openModalWindow)();
+        (0,_modal__WEBPACK_IMPORTED_MODULE_0__.openModalWindow)(formSelector, modalTimerId);
 
         const thanksModal = document.createElement('div');
         thanksModal.classList.add('modal__dialog');
@@ -503,12 +483,12 @@ function forms(){
             </div>
         `;
 
-        document.querySelector('.modal').append(thanksModal);
+        document.querySelector(formSelector).append(thanksModal);
         setTimeout(() => {
             thanksModal.remove();
             prevModalDialog.classList.add('show');
             prevModalDialog.classList.remove('hide');
-            (0,_modal__WEBPACK_IMPORTED_MODULE_0__.closeModalWindow)();
+            (0,_modal__WEBPACK_IMPORTED_MODULE_0__.closeModalWindow)(formSelector);
         }, 4000);
     }
 
@@ -544,7 +524,7 @@ function openModalWindow(modalNode, modalTimerId) {
     // modalWindow.classList.toggle('show')
     // функционал отключения прокрутки
     document.body.style.overflow = 'hidden';
-    // если пользователь сам открыл окно, то оно не будет открываться снова
+    // если пользователь сам открыл окно, то оно не будет открываться снова и если таймер был передан
     if (modalTimerId){
         clearInterval(modalTimerId);
     }
@@ -568,8 +548,13 @@ function modal(buttonNode, modalNode, modalTimerId){
 
 
     btnContactUs.forEach(btn => {
-        // пример вызова без проверки
+        // как было раньше
+        // btn.addEventListener('click', openModalWindow);
+
+        // пример вызова без проверки, мы должны передать в обработчик колбек функцию, которая сама вызывается при клике
+        // которая уже вызовет нашу функцию openModalWindow
         // btn.addEventListener('click',() => openModalWindow(modalNode, modalTimerId));
+
         btn.addEventListener('click', (event) => {
             const target = event.target;
 
@@ -639,16 +624,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-function slider() {
-    const slides = document.querySelectorAll('.offer__slide');
-    const previous = document.querySelector('.offer__slider-prev');
-    const next = document.querySelector('.offer__slider-next');
-    const total = document.querySelector('#total');
-    const current = document.querySelector('#current');
-    const slidesWrapper = document.querySelector('.offer__slider-wrapper');
-    const slidesField = document.querySelector('.offer__slider-inner');
+function slider({container, slide, prevArrow, nextArrow, totalCounter, currentCounter, wrapper, field}) {
+    const slides = document.querySelectorAll(slide);
+    const slider = document.querySelector(container);
+    const previous = document.querySelector(prevArrow);
+    const next = document.querySelector(nextArrow);
+    const total = document.querySelector(totalCounter);
+    const current = document.querySelector(currentCounter);
+    const slidesWrapper = document.querySelector(wrapper);
+    const slidesField = document.querySelector(field);
     const widthSlide = window.getComputedStyle(slidesWrapper).width;
-    const slider = document.querySelector('.offer__slider');
 
     let slideIndex = 1;
     let offset = 0;
@@ -907,11 +892,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 // TABS
-function tabs() {
+function tabs(tabsSelector, tabsContentSelector, tabsParentSelector, activeClass) {
 
-    const tabs = document.querySelectorAll('.tabheader__item');
-    const tabsContent = document.querySelectorAll('.tabcontent');
-    const tabsParent = document.querySelector('.tabheader__items');
+    const tabs = document.querySelectorAll(tabsSelector);
+    const tabsContent = document.querySelectorAll(tabsContentSelector);
+    const tabsParent = document.querySelector(tabsParentSelector);
 
     function hideTabContent() {
         tabsContent.forEach(item => {
@@ -921,7 +906,7 @@ function tabs() {
         })
 
         tabs.forEach(item => {
-            item.classList.remove('tabheader__item_active');
+            item.classList.remove(activeClass);
         })
     }
 
@@ -930,10 +915,10 @@ function tabs() {
         // tabsContent[i].style.display = 'block';
         tabsContent[i].classList.add('show', 'fade');
         tabsContent[i].classList.remove('hide');
-        tabs[i].classList.add('tabheader__item_active');
+        tabs[i].classList.add(activeClass);
     }
 
-    // сначала скрываем первично слайды, а после отображаем первый слайд
+    // сначала скрываем первично слайды, а после отобража ем первый слайд
     hideTabContent();
     showTabContent();
 
@@ -975,8 +960,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-function timer () {
-    const deadline = '2023-04-16';
+function timer (timerSelector, deadline) {
+    // const deadline = '2023-04-16';
 
     function getTimeRemaining(endTime) {
         const t = Date.parse(endTime) - Date.parse(new Date());
@@ -1039,10 +1024,56 @@ function timer () {
         }
     }
 
-    setClock('.timer', deadline);
+    setClock(timerSelector, deadline);
 }
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (timer);
+
+
+
+/***/ }),
+
+/***/ "./js/services/services.js":
+/*!*********************************!*\
+  !*** ./js/services/services.js ***!
+  \*********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "getResource": () => (/* binding */ getResource),
+/* harmony export */   "postData": () => (/* binding */ postData)
+/* harmony export */ });
+// функция с каким то асинхронным кодом используем асинхрон, для того что бы загружать/выгружать данные
+const postData = async (url, dataJSON) => {
+    // await - ожидает пока вернется результат запроса
+    const result = await fetch(url, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: dataJSON
+    });
+
+    // .json() – декодирует ответ в формате JSON в обычный js object,
+    // тоже ждем пока распарсится json и только потом его вернем
+    return await result.json();
+};
+
+
+// получить данные из db.json из меню
+// const getResource = async (url) => {
+async function getResource(url) {
+    const result = await fetch(url);
+
+    if (!result.ok) {
+        throw new Error(`Could not fetch ${url}, status: ${result.status}`);
+    }
+
+    return await result.json();
+}
+
+
+
+
 
 
 
@@ -1127,17 +1158,38 @@ __webpack_require__.r(__webpack_exports__);
 
 
 window.addEventListener('DOMContentLoaded', () => {
+    // раньше мы просто передавили колбек функцию
+    // const modalTimerId = setTimeout(openModalWindow, 50000);
+    // но мы изменили сигнатуру функции, теперь что бы передать в нее аргументы, поставим перед ней callback
     const modalTimerId = setTimeout(
         () => (0,_modules_modal__WEBPACK_IMPORTED_MODULE_1__.openModalWindow)('.modal', modalTimerId),
         50000
     );
 
-    (0,_modules_tabs__WEBPACK_IMPORTED_MODULE_0__["default"])();
-    (0,_modules_modal__WEBPACK_IMPORTED_MODULE_1__["default"])('[data-modal]', '.modal', modalTimerId);
-    (0,_modules_timer__WEBPACK_IMPORTED_MODULE_2__["default"])();
+    (0,_modules_modal__WEBPACK_IMPORTED_MODULE_1__["default"])(
+        '[data-modal]',
+        '.modal',
+        modalTimerId
+    );
+    (0,_modules_tabs__WEBPACK_IMPORTED_MODULE_0__["default"])(
+        '.tabheader__item',
+        '.tabcontent',
+        '.tabheader__items',
+        'tabheader__item_active'
+    );
+    (0,_modules_timer__WEBPACK_IMPORTED_MODULE_2__["default"])('.timer','2023-04-16');
     (0,_modules_cards__WEBPACK_IMPORTED_MODULE_3__["default"])();
-    (0,_modules_forms__WEBPACK_IMPORTED_MODULE_4__["default"])();
-    (0,_modules_slider__WEBPACK_IMPORTED_MODULE_5__["default"])();
+    (0,_modules_forms__WEBPACK_IMPORTED_MODULE_4__["default"])('.modal', modalTimerId);
+    (0,_modules_slider__WEBPACK_IMPORTED_MODULE_5__["default"])({
+        container: '.offer__slider',
+        prevArrow: '.offer__slider-prev',
+        nextArrow: '.offer__slider-next',
+        slide: '.offer__slide',
+        totalCounter: '#total',
+        currentCounter: '#current',
+        wrapper: '.offer__slider-wrapper',
+        field: '.offer__slider-inner'
+    });
     (0,_modules_calc__WEBPACK_IMPORTED_MODULE_6__["default"])();
 });
 })();
