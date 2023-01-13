@@ -65,11 +65,11 @@ function myCounter(way) {
     }
 }
 
-const i = myCounter();
-const cc1 = i();
-const cc2 = i();
-const cc3 = i();
-const cc4 = i();
-const cc5 = i();
-
-console.log(cc1, cc2, cc3, cc4, cc5);
+// const i = myCounter();
+// const cc1 = i();
+// const cc2 = i();
+// const cc3 = i();
+// const cc4 = i();
+// const cc5 = i();
+//
+// console.log(cc1, cc2, cc3, cc4, cc5);

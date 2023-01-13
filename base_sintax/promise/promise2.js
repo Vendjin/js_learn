@@ -11,8 +11,8 @@ let promise = new Promise(function(resolve, reject) {
 promise.then(
     result => console.log(result.name),
     error => console.log(error)
-).catch( () => {
-    console.error('Запустится когда произойдет ошибка');
+).catch( (e) => {
+    console.error('Запустится когда произойдет ошибка', e);
 }).finally(() => {
     console.log("Подчищаем данные или что то такое в общем и он ничего не должен возвращать")
 });

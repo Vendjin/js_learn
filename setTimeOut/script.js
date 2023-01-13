@@ -8,10 +8,10 @@ clearInterval(timerId);
 const btn = document.querySelector('.btn');
 let timer;
 let counter = 0;
-btn.addEventListener('click',(e) =>{
+/*btn.addEventListener('click',(e) =>{
     console.log(e.target)
     timer = setInterval(logger, 500, 'hello');
-});
+});*/
 
 function logger (text){
     if (counter === 3){
@@ -28,21 +28,38 @@ let id = setTimeout( function log(){
 }, 500);
 
 
-function myAnimation(){
-    const elem = document.querySelector('.box');
-    let pos = 0;
+// function myAnimation(){
+//     const elem = document.querySelector('.box');
+//     let pos = 0;
+//
+//     const id = setInterval(frame, 10);
+//
+//     function  frame(){
+//         if (pos === 300) {
+//             clearInterval(id);
+//         } else {
+//             pos++;
+//             elem.style.top = pos + 'px';
+//             elem.style.left = pos + 'px';
+//         }
+//     }
+// }
+//
+// myAnimation();
 
-    const id = setInterval(frame, 10);
+let pos = 0;
+function myAnimation(elem) {
+    pos++;
+    elem.style.top = pos + 'px';
+    elem.style.left = pos + 'px';
 
-    function  frame(){
-        if (pos === 300) {
-            clearInterval(id);
-        } else {
-            pos++;
-            elem.style.top = pos + 'px';
-            elem.style.left = pos + 'px';
-        }
+    if (pos < 300) {
+        requestAnimationFrame(() => myAnimation(elem));
     }
 }
 
-myAnimation();
+const box = document.querySelector('.box');
+
+btn.addEventListener(
+    'click', () => requestAnimationFrame(() => myAnimation(box))
+);

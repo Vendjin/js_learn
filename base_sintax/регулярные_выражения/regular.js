@@ -64,3 +64,14 @@ console.log(string.match(/\w\d\w\d/i));
 console.log(string.match(/\W/g));
 console.log(string.match(/\D/g));
 
+const msg = 'My number +12345678, name: Oleg';
+
+function transformMsg(str) {
+
+  let a = str.replace(/\d/g, '*');
+  console.log(a.replace(/\w{4}:\s\w{1.}/, 'hidden'));
+  // let b =
+
+  // return b;
+}
+transformMsg(msg);
