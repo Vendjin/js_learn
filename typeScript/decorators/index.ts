@@ -1,9 +1,11 @@
-function Decorator(target: Function) {
-    target.prototype.name = 'Alex';
+function myDecorator(option: {name: string}) {
+    return (target: Function) => {
+        target.prototype.name = 'Alex';
+    }
 }
 
 // @ts-ignore
-@Decorator
+@myDecorator
 class User {
     name: string
 
