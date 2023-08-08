@@ -72,3 +72,8 @@ console.log(it2);
 // Массив массивов превратить в объект
 const arr = [['a', 1], ['b', '2'], ['c', true]];
 console.log(Object.fromEntries(arr));
+
+
+
+
+

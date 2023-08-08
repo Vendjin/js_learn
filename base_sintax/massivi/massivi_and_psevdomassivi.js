@@ -53,3 +53,8 @@ function compareNum(a, b) {
 console.log(testNumbersArr.sort(compareNum));
 
 
+let h = 'hello';
+
+for (let i in h) {
+    console.log(i)
+}

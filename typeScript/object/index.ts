@@ -23,3 +23,22 @@ const secondUser:IUser = {
     location: 'Kiev'
 }
 
+// расширить тип
+type Pet = {
+    name: string
+    age: number
+}
+
+type Dog = Pet & {
+    kind: 'Dog'
+}
+
+type Cat = Pet & {
+    kind: 'Cat'
+}
+
+const myPet: Cat = {
+    name: 'Tom',
+    age: 3,
+    kind: 'Cat'
+}
